@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strenghter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #333;
+        }
+        nav a {
+            color: white;
+            padding: 0.8rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            margin: 0 0.5rem;
+        }
+        nav a:hover {
+            background: #575757;
+        }
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Password Strengther</h1>
+    </header>
+
+    <h1>Password Strength Checker</h1>
+    <label for="password">Enter your password:</label>
+    <input type="password" id="password" placeholder="Enter password" oninput="checkPasswordStrength()">
+
+    <div id="strength" class="strength"></div>
+    <div id="suggestions" class="suggestions"></div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthIndicator = document.getElementById('strength');
+            const suggestionsDiv = document.getElementById('suggestions');
+
+            let strength = "Weak";
+            let suggestions = [];
+
+            if (password.length >= 8) {
+                strength = "Moderate";
+            } else {
+                suggestions.push("Password should be at least 8 characters long.");
+            }
+
+            if (/[A-Z]/.test(password)) {
+                strength = strength === "Weak" ? "Moderate" : "Strong";
+            } else {
+                suggestions.push("Include at least one uppercase letter.");
+            }
+
+            if (/[a-z]/.test(password)) {
+                // Lowercase is already a default assumption, no strength bump
+            } else {
+                suggestions.push("Include at least one lowercase letter.");
+            }
+
+            if (/\d/.test(password)) {
+                strength = strength === "Weak" ? "Moderate" : "Strong";
+            } else {
+                suggestions.push("Include at least one number.");
+            }
+
+            if (/[^A-Za-z0-9]/.test(password)) {
+                strength = "Strong";
+            } else {
+                suggestions.push("Include at least one special character (e.g., @, #, $, etc.).");
+            }
+
+            // Update styles based on strength
+            strengthIndicator.textContent = `Password Strength: ${strength}`;
+            strengthIndicator.className = `strength ${strength.toLowerCase()}`;
+            
+            suggestionsDiv.innerHTML = suggestions.length > 0 
+                ? `<ul><li>${suggestions.join('</li><li>')}</li></ul>` 
+                : "";
+        }
+    </script>
+
+
+
+    <footer>
+        <p>&copy; 2025 My Website. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
